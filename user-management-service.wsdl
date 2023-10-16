@@ -1,0 +1,67 @@
+<definitions name= "userManagementService"
+    targetNamespace = "http://example.com/user-management"
+    xmlns:xsd = "http://www.w3.org/2001/XMLSchema"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:soap = "http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns = "http://example.com/user-management">
+
+    <types>
+        <xsd:schema 
+            targetNamespace = "http://example.com/user-management"
+            xmlns = "http://example.com/user-management"
+            attributeFormDefault="qualified" elementFormDefault="qualified" >
+            <xsd:element name = "getUserRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="userId" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name = "getUserResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                       <xsd:element name="userId" type="xsd:int"/>
+                        <xsd:element name="name" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name = "getUserRequestMessage">
+        <part name = "request" element = "tns:getUserRequest"></part>
+    </message>
+
+    <message name = "getUserResponseMessage">
+         <part name = "response" element = "tns:getUserResponse"></part>
+    </message>
+
+    <portType name = "userManagementPortType">
+        <operation name = "getUser">
+            <input message = "tns:getUserRequestMessage" />
+            <output message = "tns:getUserResponseMessage" />
+        </operation>
+    </portType>
+
+
+    <binding name="userManagementBinding" type="tns:userManagementPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="getUser">
+        <soap:operation soapAction="getUser"/>
+        <input>
+            <soap:body use="literal"/>
+        </input>
+        <output>
+            <soap:body use="literal"/>
+        </output>
+    </operation>
+</binding>
+
+
+    <service name="userManagementService">
+        <port name="userManagementPort" binding="tns:userManagementBinding">
+            <soap:address  location="http://example.com/user-management" />
+        </port>
+    </service>
+
+</definitions>
